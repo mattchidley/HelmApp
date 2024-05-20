@@ -1,0 +1,27 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: dotnetingress
+  annotations:
+    {{- range $key, $value := .Values.ingress.annotations }}
+    {{ $key }}: {{ $value | quote }}
+    {{- end }}
+spec:
+  rules:
+    - host: {{ .Values.ingress.hosts[0].host }}
+      http:
+        paths:
+          - path: /a
+            pathType: {{ .Values.ingress.hosts[0].paths[0].pathType }}
+            backend:
+              service:
+                name: appA
+                port:
+                  number: 80
+          - path: /b
+            pathType: {{ .Values.ingress.hosts[0].paths[1].pathType }}
+            backend:
+              service:
+                name: appB
+                port:
+                  number: 80
