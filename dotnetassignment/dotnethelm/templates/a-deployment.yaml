@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: appA
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: appA
+  template:
+    metadata:
+      labels:
+        app: appA
+    spec:
+      containers:
+        - name: appA
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          ports:
+            - containerPort: 80
+          env:
+            - name: ENV_CONFIG
+              value: "Helm Pod A"
